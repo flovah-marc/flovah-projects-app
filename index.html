@@ -576,7 +576,7 @@ body.dark .flovih-wrap{ mix-blend-mode:screen;filter:invert(1); }
 .kanban-col-title{ font:700 10px/1 'Noto Sans Mono',monospace;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);flex:1; }
 .kanban-col-count{ font:500 9px/1 'Noto Sans Mono',monospace;color:var(--muted);padding:2px 7px;border:var(--line-thin) solid var(--ink);border-radius:999px; }
 .kanban-cards{ flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-bottom:40px; }
-.kcard{ background:var(--sage-soft);border:var(--line-base) solid var(--ink);border-top:3px solid var(--kcard-accent,var(--ink));padding:10px 12px;cursor:grab;touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:background 280ms cubic-bezier(.2,.8,.2,1),transform 280ms cubic-bezier(.2,.8,.2,1),opacity 280ms cubic-bezier(.2,.8,.2,1),box-shadow 280ms cubic-bezier(.2,.8,.2,1); }
+.kcard{ background:var(--sage-soft);border:var(--line-base) solid var(--ink);border-top:3px solid var(--kcard-accent,var(--ink));padding:10px 12px;cursor:grab;-webkit-touch-callout:none;transition:background 280ms cubic-bezier(.2,.8,.2,1),transform 280ms cubic-bezier(.2,.8,.2,1),opacity 280ms cubic-bezier(.2,.8,.2,1),box-shadow 280ms cubic-bezier(.2,.8,.2,1); }
 .kcard:hover{ background:var(--paper);transform:translateY(-1px); }
 .kcard.kcard-src-dragging{ opacity:0;max-height:0 !important;padding:0 12px;margin:0;border-top-width:0;overflow:hidden;pointer-events:none;transition:opacity 160ms ease-out,max-height 400ms cubic-bezier(.4,0,.2,1),padding 400ms cubic-bezier(.4,0,.2,1),margin 400ms cubic-bezier(.4,0,.2,1),border-top-width 160ms; }
 .kanban-cards.drag-over{ background:color-mix(in srgb, var(--sage-soft) 30%, transparent);border-radius:6px;transition:background 300ms; }
@@ -650,7 +650,7 @@ body.dark .flovih-wrap{ mix-blend-mode:screen;filter:invert(1); }
    ===================================================== */
 .flovih-dock{ display:none;position:fixed;bottom:80px;right:16px;z-index:1; }
 @media (pointer:coarse){
-  .hero .flovih-wrap{ display:none; }
+  .flovih-wrap{ display:none !important; }
   .flovih-dock{ display:block; }
   .flovih-dock .flovih-img{ height:70px;transform:none; }
 }
@@ -802,6 +802,126 @@ body.dark .flovih-wrap{ mix-blend-mode:screen;filter:invert(1); }
 }
 .vf-curtain.l{ left:0; }
 .vf-curtain.r{ right:0; }
+
+/* =====================================================
+   iPHONE / SMALL MOBILE (< 480px)
+   ===================================================== */
+@media (max-width:480px){
+  /* Root layout */
+  body{ padding:max(8px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left)); }
+  body::before,body::after{ height:8px; }
+  .viewport-frame{ top:8px;bottom:8px;width:calc(100vw - 8px);border-width:0; }
+  .vf-curtain{ display:none; }
+  .viewport-frame .vf-carousel{ padding:6px 0;gap:14px; }
+  .viewport-frame .vf-carousel button{ width:7px;height:7px; }
+  .viewport-frame .vf-statusbar{ display:none; }
+  .fp-root{ padding:0; }
+
+  /* Header — compact mobile */
+  .hub-header{ margin:0 -8px;padding:6px 8px 4px;position:sticky;top:0;z-index:30; }
+  .hub-header-top{ gap:4px;padding-left:4px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch; }
+  .top-nav{ font-size:9px;padding:5px 8px;gap:5px;flex-shrink:0;border-radius:10px; }
+  .top-nav .idx{ display:none; }
+  .top-nav .sep{ display:none; }
+  .top-nav .crumb{ font-size:9px;letter-spacing:0.06em; }
+  .top-nav .crumb.active::before{ font-size:6px;margin-right:2px; }
+  .hero-actions{ gap:3px;margin-right:4px;flex-wrap:nowrap; }
+  .hdr-btn{ padding:5px 7px;font-size:8px;min-width:30px;min-height:30px;justify-content:center; }
+  .hdr-btn.primary{ padding:5px 9px; }
+  .btn-label{ display:none; }
+  .color-picker{ display:none; }
+  .ws-select-wrap{ display:none; }
+  .sync-status{ display:none; }
+  .online-strip{ display:none; }
+
+  /* View wrapper */
+  .view-wrap{ border-radius:0; }
+  .vw-line{ display:none; }
+
+  /* Canvas — full width */
+  #canvas-container{ touch-action:none; }
+  .zoom-controls{ bottom:60px !important;right:8px !important; }
+  .zoom-controls button{ width:36px;height:36px;font-size:16px; }
+  .minimap{ display:none; }
+  .canvas-empty .ce-title{ font-size:12px; }
+
+  /* Kanban — single column swipeable */
+  .kanban-scroll{ flex-direction:row;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:8px 0;gap:0; }
+  .kanban-col{ flex-shrink:0;width:calc(100vw - 32px);scroll-snap-align:start;padding:0 12px;border-right:0; }
+  .kanban-col-header{ padding:6px 0 8px; }
+  .kanban-cards{ gap:6px;padding-bottom:60px; }
+  .kcard{ padding:8px 10px; }
+  .kcard-title{ font-size:10px; }
+  .kcard-desc{ font-size:10px; }
+  .kcard-tag{ font-size:7px;padding:2px 4px; }
+
+  /* List view — horizontal scroll for table */
+  .list-scroll{ overflow-x:auto;-webkit-overflow-scrolling:touch; }
+  .list-table{ min-width:600px; }
+  .list-table th{ font-size:8px;padding:6px 8px; }
+  .list-table td{ font-size:10px;padding:6px 8px; }
+
+  /* Timeline — scroll */
+  .timeline-scroll{ overflow-x:auto;-webkit-overflow-scrolling:touch; }
+
+  /* Detail panel — full screen on mobile */
+  .detail-panel{
+    top:0 !important;bottom:0 !important;right:0 !important;left:0 !important;
+    width:100% !important;height:100% !important;
+    border-left:0;border-top:0;border-radius:0;
+    transform:translateX(100%);
+    z-index:50;
+  }
+  .detail-panel.open{ transform:translateX(0); }
+  .dp-header{ padding:12px 12px;position:sticky;top:0;z-index:1;background:var(--sage-soft); }
+  .dp-body{ padding:12px; }
+  .dp-footer{ padding:10px 12px; }
+  .dp-close{ width:36px;height:36px;font-size:18px; }
+  .dp-input{ font-size:14px;padding:10px 12px; }
+  .dp-textarea{ font-size:14px;padding:10px 12px; }
+  .dp-select{ font-size:12px;padding:10px 12px; }
+  .dp-tag{ font-size:10px;padding:4px 8px; }
+  .status-opt{ padding:6px 12px;font-size:10px; }
+
+  /* Dialogs — full width */
+  .fp-dialog{ width:calc(100vw - 24px) !important;max-height:85vh; }
+  .cmd-palette{ width:calc(100vw - 16px); }
+
+  /* Context menus — wider touch targets */
+  .ctx-menu{ min-width:200px; }
+  .ctx-item{ padding:10px 14px;font-size:11px;min-height:40px; }
+
+  /* Mobile bottom bar — larger */
+  .mobile-bar{ padding:6px 16px !important; }
+  .mb-btn{ width:40px !important;height:40px !important;font-size:16px !important; }
+
+  /* FLOVIH dock — smaller on phone */
+  .flovih-dock .flovih-img{ height:50px !important; }
+  .flovih-dock{ bottom:68px !important;right:8px !important; }
+
+  /* Toast — above mobile bar */
+  .toast-stack{ bottom:100px; }
+  .toast{ font-size:9px;padding:6px 12px; }
+
+  /* Color palette — position fix */
+  .color-palette{ right:-60px; }
+
+  /* Search overlay */
+  .search-overlay .search-input{ font-size:16px; }
+}
+
+/* =====================================================
+   TOUCH DEVICE GENERAL FIXES
+   ===================================================== */
+@media (pointer:coarse){
+  /* Larger tap targets everywhere */
+  button{ min-height:36px;min-width:36px; }
+  .ctx-item{ min-height:40px; }
+  /* Prevent text selection during interactions */
+  .kanban-scroll{ -webkit-user-select:none;user-select:none; }
+  /* Allow scroll on kanban cards area */
+  .kanban-cards{ -webkit-overflow-scrolling:touch; }
+}
 </style>
 </head>
 <body class="entering">
@@ -3126,7 +3246,8 @@ const kanbanDrag = {
 
   onPointerDown(e, cardId, kc) {
     if ((e.pointerType === 'mouse' && e.button !== 0) || this.settling) return;
-    e.preventDefault();
+    // Don't preventDefault here — let native scroll/zoom work until we confirm a drag
+    if (e.pointerType === 'mouse') e.preventDefault();
     this.cardId = cardId;
     this.srcEl = kc;
     this.didMove = false;
@@ -3135,6 +3256,7 @@ const kanbanDrag = {
     this.onSettleDone = null;
     this._pointerId = e.pointerId;
     this._pointerType = e.pointerType;
+    this._dragConfirmed = false;
     const rect = kc.getBoundingClientRect();
     this.offsetX = e.clientX - rect.left;
     this.offsetY = e.clientY - rect.top;
@@ -3143,19 +3265,32 @@ const kanbanDrag = {
     this.startX = e.clientX;
     this.startY = e.clientY;
     this.srcRect = rect;
-    // Capture pointer so touch events keep firing even when finger moves off card
-    try { kc.setPointerCapture(e.pointerId); } catch(ex) {}
-    kc.addEventListener('pointermove', this._onMove);
-    kc.addEventListener('pointerup', this._onUp, { once: true });
-    kc.addEventListener('pointercancel', this._onUp, { once: true });
+    // For mouse: capture immediately. For touch: capture only after drag confirmed
+    if (e.pointerType === 'mouse') {
+      try { kc.setPointerCapture(e.pointerId); } catch(ex) {}
+    }
+    document.addEventListener('pointermove', this._onMove);
+    document.addEventListener('pointerup', this._onUp, { once: true });
+    document.addEventListener('pointercancel', this._onUp, { once: true });
   },
 
   onPointerMove(e) {
-    e.preventDefault();
     const dx = e.clientX - this.startX, dy = e.clientY - this.startY;
     // Larger dead-zone for touch to prevent accidental drags while scrolling
-    const threshold = this._pointerType === 'touch' ? 10 : 5;
+    const threshold = this._pointerType === 'touch' ? 12 : 5;
     if (!this.active && (Math.abs(dx) > threshold || Math.abs(dy) > threshold)) {
+      // For touch: if mostly vertical movement, let native scroll handle it
+      if (this._pointerType === 'touch' && !this._dragConfirmed) {
+        if (Math.abs(dy) > Math.abs(dx) * 1.5) {
+          // Vertical swipe — cancel drag, let scroll happen
+          document.removeEventListener('pointermove', this._onMove);
+          document.removeEventListener('pointerup', this._onUp);
+          document.removeEventListener('pointercancel', this._onUp);
+          return;
+        }
+        this._dragConfirmed = true;
+        try { this.srcEl.setPointerCapture(this._pointerId); } catch(ex) {}
+      }
       this.active = true;
       this.didMove = true;
 
@@ -3202,6 +3337,8 @@ const kanbanDrag = {
       requestAnimationFrame(() => this.srcEl.classList.add('kcard-src-dragging'));
     }
     if (!this.active) return;
+    // Only prevent default once drag is confirmed — lets native scroll work until then
+    e.preventDefault();
 
     this.tx = e.clientX - this.offsetX;
     this.ty = e.clientY - this.offsetY;
@@ -3224,12 +3361,11 @@ const kanbanDrag = {
   },
 
   onPointerUp(e) {
-    // Release pointer capture and clean up listeners from the source element
-    const captureEl = this.srcEl || e.target;
-    try { captureEl.releasePointerCapture(this._pointerId); } catch(ex) {}
-    captureEl.removeEventListener('pointermove', this._onMove);
-    captureEl.removeEventListener('pointerup', this._onUp);
-    captureEl.removeEventListener('pointercancel', this._onUp);
+    // Release pointer capture and clean up listeners
+    try { (this.srcEl || e.target).releasePointerCapture(this._pointerId); } catch(ex) {}
+    document.removeEventListener('pointermove', this._onMove);
+    document.removeEventListener('pointerup', this._onUp);
+    document.removeEventListener('pointercancel', this._onUp);
 
     if (!this.didMove) {
       this.active = false;
