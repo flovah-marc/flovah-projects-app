@@ -2175,12 +2175,14 @@ function onCardPointerDown(e, id) {
     cardStartX: card.x, cardStartY: card.y,
     didMove: false,
   };
-  // Long press → context menu (touch)
+  // Long press → context menu (touch only, 700ms to avoid accidental triggers)
   clearTimeout(pointerState.longPressTimer);
   if (e.pointerType === 'touch') {
     pointerState.longPressTimer = setTimeout(() => {
-      showCardCtx({clientX: e.clientX, clientY: e.clientY}, id);
-    }, 500);
+      if (!pointerState.didMove) {
+        showCardCtx({clientX: e.clientX, clientY: e.clientY}, id);
+      }
+    }, 700);
   }
   // Selection
   if (!e.shiftKey) {
