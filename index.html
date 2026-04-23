@@ -2147,7 +2147,11 @@ function bindCardEvents(el, id) {
   // Click on project name → card context menu
   const nameEl = el.querySelector('.pcard-name');
   if (nameEl) {
-    nameEl.addEventListener('click', e => { e.stopPropagation(); showCardNameMenu(e, id); });
+    // Only show name menu on mouse click — touch taps should just open the card normally
+    nameEl.addEventListener('click', e => {
+      if (window.matchMedia('(pointer:coarse)').matches) return; // let card tap handler deal with it
+      e.stopPropagation(); showCardNameMenu(e, id);
+    });
     nameEl.style.cursor = 'pointer';
   }
   el.addEventListener('keydown', e => {
