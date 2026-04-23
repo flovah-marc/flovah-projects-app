@@ -2295,7 +2295,10 @@ container.addEventListener('pointermove', e => {
   const dy = e.clientY - pointerState.lastY;
   const totalDx = e.clientX - pointerState.startX;
   const totalDy = e.clientY - pointerState.startY;
-  if (Math.hypot(totalDx, totalDy) > 4) {
+  const totalDist = Math.hypot(totalDx, totalDy);
+  // Touch needs a bigger dead-zone (fingers wobble) before counting as intentional move
+  const moveThreshold = (e.pointerType === 'touch') ? 12 : 4;
+  if (totalDist > moveThreshold) {
     pointerState.didMove = true;
     clearTimeout(pointerState.longPressTimer);
   }
