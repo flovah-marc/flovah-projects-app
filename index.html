@@ -648,12 +648,12 @@ body.dark .flovih-wrap{ mix-blend-mode:screen;filter:invert(1); }
 /* =====================================================
    FLOVIH
    ===================================================== */
-.flovih-dock{ display:none;position:fixed;bottom:80px;right:16px;z-index:1;mix-blend-mode:multiply;pointer-events:none; }
+.flovih-dock{ display:none;position:fixed;bottom:56px;right:max(24px,calc((100vw - 1360px)/2 + 24px));z-index:1;mix-blend-mode:multiply;pointer-events:none; }
 body.dark .flovih-dock{ mix-blend-mode:screen;filter:invert(1); }
 @media (pointer:coarse){
   .flovih-wrap{ display:none !important; }
   .flovih-dock{ display:block; }
-  .flovih-dock .flovih-img{ height:70px;transform:none; }
+  .flovih-dock .flovih-img{ height:100px;transform:none; }
 }
 
 /* =====================================================
@@ -897,8 +897,8 @@ body.dark .flovih-dock{ mix-blend-mode:screen;filter:invert(1); }
   .mb-btn{ width:40px !important;height:40px !important;font-size:16px !important; }
 
   /* FLOVIH dock — smaller on phone */
-  .flovih-dock .flovih-img{ height:50px !important; }
-  .flovih-dock{ bottom:68px !important;right:8px !important; }
+  .flovih-dock .flovih-img{ height:60px !important; }
+  .flovih-dock{ bottom:50px !important;right:12px !important; }
 
   /* Toast — above mobile bar */
   .toast-stack{ bottom:100px; }
