@@ -2142,6 +2142,7 @@ let pointerState = {
 
 function bindCardEvents(el, id) {
   el.addEventListener('pointerdown', e => onCardPointerDown(e, id), {passive:false});
+  el.addEventListener('contextmenu', e => { e.preventDefault(); e.stopPropagation(); selectCard(id); showCardCtx(e, id); });
   el.addEventListener('dblclick',    e => { e.stopPropagation(); openDetail(id); });
   // Click on project name → card context menu
   const nameEl = el.querySelector('.pcard-name');
@@ -2164,6 +2165,8 @@ function bindCardEvents(el, id) {
 
 function onCardPointerDown(e, id) {
   if (e.target.closest('.pcard-handle')) return;
+  // Ignore right-click — let contextmenu handle it
+  if (e.button === 2) return;
   e.stopPropagation(); e.preventDefault();
   container.setPointerCapture(e.pointerId);
   const card = state.cards.get(id);
@@ -2174,15 +2177,17 @@ function onCardPointerDown(e, id) {
     target: id, targetType: 'card',
     cardStartX: card.x, cardStartY: card.y,
     didMove: false,
+    _cardLongPressed: false,
   };
-  // Long press → context menu (touch only, 700ms to avoid accidental triggers)
+  // Long press → context menu (touch only, needs a real hold — not a tap)
   clearTimeout(pointerState.longPressTimer);
   if (e.pointerType === 'touch') {
     pointerState.longPressTimer = setTimeout(() => {
-      if (!pointerState.didMove) {
+      if (!pointerState.didMove && pointerState.down) {
+        pointerState._cardLongPressed = true;
         showCardCtx({clientX: e.clientX, clientY: e.clientY}, id);
       }
-    }, 700);
+    }, 800);
   }
   // Selection
   if (!e.shiftKey) {
@@ -2359,8 +2364,8 @@ container.addEventListener('pointerup', e => {
     // Tap in select mode → toggle
   }
 
-  // Single click (no drag) on a card → open detail panel
-  if (pointerState.targetType === 'card' && !pointerState.didMove && !state.isSelectMode) {
+  // Single click (no drag) on a card → open detail panel (skip if long-press context menu fired)
+  if (pointerState.targetType === 'card' && !pointerState.didMove && !state.isSelectMode && !pointerState._cardLongPressed) {
     const clickedId = pointerState.target;
     if (clickedId) openDetail(clickedId);
   }
