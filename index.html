@@ -2173,7 +2173,14 @@ function onCardPointerDown(e, id) {
   // Ignore right-click — let contextmenu handle it
   if (e.button === 2) return;
   e.stopPropagation(); e.preventDefault();
-  container.setPointerCapture(e.pointerId);
+  // On touch: use document listeners (setPointerCapture to container fails on iOS Safari)
+  // On mouse: capture to container as before
+  if (e.pointerType === 'touch') {
+    pointerState._touchCardDrag = true;
+  } else {
+    try { container.setPointerCapture(e.pointerId); } catch(ex) {}
+    pointerState._touchCardDrag = false;
+  }
   const card = state.cards.get(id);
   pointerState = {
     ...pointerState, down: true, id: e.pointerId,
@@ -2405,7 +2412,55 @@ container.addEventListener('pointercancel', e => {
   pointerState.pinch = { active: false, p1: null, p2: null, startDist: 0, startScale: 0, startPanX: 0, startPanY: 0 };
   pointerState.down = false;
   pointerState.targetType = null;
+  pointerState._touchCardDrag = false;
   hideMarquee();
+});
+
+// Document-level listeners for touch card drag (iOS Safari doesn't reliably capture to container)
+document.addEventListener('pointermove', e => {
+  if (!pointerState._touchCardDrag || !pointerState.down || pointerState.id !== e.pointerId) return;
+  if (pointerState.targetType !== 'card') return;
+  const dx = e.clientX - pointerState.lastX;
+  const dy = e.clientY - pointerState.lastY;
+  const totalDx = e.clientX - pointerState.startX;
+  const totalDy = e.clientY - pointerState.startY;
+  if (Math.hypot(totalDx, totalDy) > 12) {
+    pointerState.didMove = true;
+    clearTimeout(pointerState.longPressTimer);
+  }
+  pointerState.lastX = e.clientX; pointerState.lastY = e.clientY;
+  if (pointerState.didMove) {
+    const wdx = dx / state.scale, wdy = dy / state.scale;
+    for (const id of state.selectedCards) {
+      const card = state.cards.get(id);
+      if (!card) continue;
+      card.x += wdx; card.y += wdy;
+      const el = document.getElementById('pcard-' + id);
+      if (el) { el.style.left = card.x + 'px'; el.style.top = card.y + 'px'; }
+    }
+    redrawAllEdges();
+  }
+}, {passive:true});
+
+document.addEventListener('pointerup', e => {
+  if (!pointerState._touchCardDrag || pointerState.id !== e.pointerId) return;
+  clearTimeout(pointerState.longPressTimer);
+  // Single tap (no drag) on card → open detail
+  if (pointerState.targetType === 'card' && !pointerState.didMove && !pointerState._cardLongPressed) {
+    const clickedId = pointerState.target;
+    if (clickedId) openDetail(clickedId);
+  }
+  // Save if dragged
+  if (pointerState.targetType === 'card' && pointerState.didMove) {
+    for (const id of state.selectedCards) {
+      const card = state.cards.get(id);
+      if (card && yCards) yCards.set(id, {...card});
+    }
+    scheduleSave();
+  }
+  pointerState.down = false;
+  pointerState.targetType = null;
+  pointerState._touchCardDrag = false;
 });
 
 container.addEventListener('wheel', e => {
