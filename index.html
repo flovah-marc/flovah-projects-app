@@ -648,7 +648,8 @@ body.dark .flovih-wrap{ mix-blend-mode:screen;filter:invert(1); }
 /* =====================================================
    FLOVIH
    ===================================================== */
-.flovih-dock{ display:none;position:fixed;bottom:80px;right:16px;z-index:1; }
+.flovih-dock{ display:none;position:fixed;bottom:80px;right:16px;z-index:1;mix-blend-mode:multiply;pointer-events:none; }
+body.dark .flovih-dock{ mix-blend-mode:screen;filter:invert(1); }
 @media (pointer:coarse){
   .flovih-wrap{ display:none !important; }
   .flovih-dock{ display:block; }
